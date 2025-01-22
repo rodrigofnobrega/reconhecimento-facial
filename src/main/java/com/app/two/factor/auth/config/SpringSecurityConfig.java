@@ -37,7 +37,8 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                antMatcher(HttpMethod.POST, "/api/v1/users")
+                                antMatcher(HttpMethod.POST, "/api/v1/users"),
+                                antMatcher(HttpMethod.POST, "/api/v1/users/login")
                         ).permitAll()
                         .anyRequest().authenticated()
                 ).sessionManagement(

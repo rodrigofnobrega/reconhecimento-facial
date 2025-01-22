@@ -3,8 +3,10 @@ package com.app.two.factor.auth.user;
 import com.app.two.factor.auth.jwt.JwtToken;
 import com.app.two.factor.auth.jwt.JwtUserDetails;
 import com.app.two.factor.auth.user.dto.UserCreateDTO;
+import com.app.two.factor.auth.user.dto.UserLoginDTO;
 import com.app.two.factor.auth.user.dto.UserResponseDTO;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +30,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
-    @PostMapping("/verify-face")
-    @PreAuthorize("hasRole('STEP1_COMPLETED')")
-    public ResponseEntity<JwtToken> verifyFace(MultipartFile fileFace,
+    @PostMapping("/register-face")
+    @PreAuthorize("hasRole('ROLE_STEP1_SIGNUP_COMPLETED')")
+    public ResponseEntity<Void> registerFace(MultipartFile frontFace, MultipartFile leftFace, MultipartFile rightFace,
                                          @AuthenticationPrincipal JwtUserDetails userDetails) throws IOException {
-        JwtToken token = userService.saveLabelFacialRecognition(fileFace, userDetails.getId());
+        userService.registerFace(frontFace, leftFace, rightFace, userDetails.getId());
 
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{id}")
@@ -44,5 +46,21 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new UserResponseDTO(user.getId(), user.getName(), user.getName()));
+    }
+
+    @PostMapping("/verify-face")
+    @PreAuthorize("hasRole('ROLE_STEP1_SIGIN_COMPLETED')")
+    public ResponseEntity<JwtToken> verifyFace(MultipartFile frontFace,
+                                           @AuthenticationPrincipal JwtUserDetails userDetails) throws IOException {
+        JwtToken token = userService.verifyFace(frontFace, userDetails.getId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(token);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtToken> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+        JwtToken token = userService.login(userLoginDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 }

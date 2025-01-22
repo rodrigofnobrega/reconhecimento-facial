@@ -14,11 +14,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Paths;
 
 public class FacialRecognizer {
     // Caminhos para os arquivos necessários
-    private String modelPath = getClass().getResource("/modelo.xml").getPath();
-    private String cascadePath = getClass().getResource("/haarcascade_frontalface_alt2.xml").getPath();
+    private String modelPath = Paths.get("src/main/resources/modelo.xml").toString();
+    private String cascadePath = Paths.get("src/main/resources/haarcascade_frontalface_alt2.xml").toString();
 
     public int recognizeFace(MultipartFile multipartFile) throws IOException {
         // Carregar o modelo treinado
