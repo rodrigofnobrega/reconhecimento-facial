@@ -29,9 +29,10 @@ public class UserEntity {
     @Column(name = "label_reconhecimento_facial")
     private int labelFacialRecognition;
 
-    public UserEntity(String name, String email, String password) {
+    public UserEntity(String name, String email, String password, int label) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.setLabelFacialRecognition(label);
     }
 }

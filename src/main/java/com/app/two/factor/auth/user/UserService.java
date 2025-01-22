@@ -1,7 +1,10 @@
 package com.app.two.factor.auth.user;
 
+import com.app.two.factor.auth.jwt.JwtToken;
+import com.app.two.factor.auth.jwt.JwtUtils;
 import com.app.two.factor.auth.user.dto.UserCreateDTO;
 import com.app.two.factor.auth.utils.FacialRecognizer;
+import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,15 +25,17 @@ public class UserService {
     }
 
     @Transactional
-    public Void save(UserCreateDTO userCreateDTO) {
-        UserEntity user = new UserEntity(userCreateDTO.getName(), userCreateDTO.getEmail(), userCreateDTO.getPassword());
+    public JwtToken save(UserCreateDTO userCreateDTO) {
+        UserEntity user = new UserEntity(userCreateDTO.getName(), userCreateDTO.getEmail(),
+                userCreateDTO.getPassword(), -1);
 
         userRepository.save(user);
-        return null;
+
+        return JwtUtils.createToken(user.getEmail(), "ROLE_STEP1_COMPLETED");
     }
 
     @Transactional
-    public void saveLabelFacialRecognition(MultipartFile fileFace, long userId) throws IOException {
+    public JwtToken saveLabelFacialRecognition(MultipartFile fileFace, long userId) throws IOException {
         FacialRecognizer facialRecognizer = new FacialRecognizer();
 
         int label = facialRecognizer.recognizeFace(fileFace);
@@ -39,5 +44,7 @@ public class UserService {
         user.setLabelFacialRecognition(label);
 
         userRepository.save(user);
+
+        return JwtUtils.createToken(user.getEmail(), "ROLE_USER");
     }
 }

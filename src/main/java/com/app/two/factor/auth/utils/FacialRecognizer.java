@@ -35,10 +35,9 @@ public class FacialRecognizer {
             os.write(multipartFile.getBytes());
         }
 
-
         if (!file.exists()) {
             System.out.println("Arquivo não foi criado.");
-            return -1;
+            throw new RuntimeException("Erro ao abrir o arquivo");
         }
 
         System.out.println("Arquivo criado com sucesso em: " + file.getAbsolutePath());
@@ -47,7 +46,7 @@ public class FacialRecognizer {
         Mat inputImage = opencv_imgcodecs.imread(file.getAbsolutePath(), opencv_imgcodecs.IMREAD_GRAYSCALE);
         if (inputImage.empty()) {
             System.out.println("Erro ao carregar a imagem de entrada.");
-            return -1;
+            throw new RuntimeException("Erro ao carregar a imagem de entrada");
         }
 
         // Equalizar o histograma da imagem
