@@ -1,7 +1,7 @@
 package com.app.two.factor.auth.config;
 
-import com.app.two.factor.auth.jwt.JwtAuthenticationEntryPoint;
-import com.app.two.factor.auth.jwt.JwtAuthorizationFilter;
+import com.app.two.factor.auth.infra.jwt.JwtAuthenticationEntryPoint;
+import com.app.two.factor.auth.infra.jwt.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

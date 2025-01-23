@@ -1,5 +1,7 @@
 package com.app.two.factor.auth.utils;
 
+import com.app.two.factor.auth.exception.FileException;
+import com.app.two.factor.auth.exception.RecognizingFaceException;
 import org.bytedeco.opencv.opencv_face.FaceRecognizer;
 import org.bytedeco.opencv.opencv_face.LBPHFaceRecognizer;
 import org.bytedeco.opencv.global.opencv_imgcodecs;
@@ -38,7 +40,7 @@ public class FacialRecognizer {
 
         if (!file.exists()) {
             System.out.println("Arquivo não foi criado.");
-            throw new RuntimeException("Erro ao abrir o arquivo");
+            throw new FileException("Erro ao abrir o arquivo");
         }
 
         System.out.println("Arquivo criado com sucesso em: " + file.getAbsolutePath());
@@ -47,7 +49,7 @@ public class FacialRecognizer {
         Mat inputImage = opencv_imgcodecs.imread(file.getAbsolutePath(), opencv_imgcodecs.IMREAD_GRAYSCALE);
         if (inputImage.empty()) {
             System.out.println("Erro ao carregar a imagem de entrada.");
-            throw new RuntimeException("Erro ao carregar a imagem de entrada");
+            throw new FileException("Erro ao carregar a imagem de entrada");
         }
 
         // Equalizar o histograma da imagem
@@ -69,8 +71,6 @@ public class FacialRecognizer {
             return label;
         }
 
-
-
-        throw new RuntimeException("Nenhum rosto foi encontrado.");
+        throw new RecognizingFaceException("Nenhum rosto foi encontrado.");
     }
 }

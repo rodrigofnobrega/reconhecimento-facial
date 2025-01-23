@@ -1,12 +1,11 @@
 package com.app.two.factor.auth.user;
 
-import com.app.two.factor.auth.jwt.JwtToken;
-import com.app.two.factor.auth.jwt.JwtUserDetails;
+import com.app.two.factor.auth.infra.jwt.JwtToken;
+import com.app.two.factor.auth.infra.jwt.JwtUserDetails;
 import com.app.two.factor.auth.user.dto.UserCreateDTO;
 import com.app.two.factor.auth.user.dto.UserLoginDTO;
 import com.app.two.factor.auth.user.dto.UserResponseDTO;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.app.two.factor.auth.jwt;
+package com.app.two.factor.auth.infra.jwt;
 
 import com.app.two.factor.auth.user.UserEntity;
 import org.springframework.security.core.authority.AuthorityUtils;

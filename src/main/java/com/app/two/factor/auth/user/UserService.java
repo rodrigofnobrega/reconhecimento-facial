@@ -1,12 +1,14 @@
 package com.app.two.factor.auth.user;
 
-import com.app.two.factor.auth.jwt.JwtToken;
-import com.app.two.factor.auth.jwt.JwtUtils;
+import com.app.two.factor.auth.exception.BadCredentialsException;
+import com.app.two.factor.auth.exception.EntityNotFoundException;
+import com.app.two.factor.auth.exception.RecognizingFaceException;
+import com.app.two.factor.auth.infra.jwt.JwtToken;
+import com.app.two.factor.auth.infra.jwt.JwtUtils;
 import com.app.two.factor.auth.user.dto.UserCreateDTO;
 import com.app.two.factor.auth.user.dto.UserLoginDTO;
 import com.app.two.factor.auth.utils.FacialRecognizer;
 import com.app.two.factor.auth.utils.FacialRecognizerTraining;
-import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +27,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserEntity findById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Erro ao encontrar usuário com o id="+id)
+                () -> new EntityNotFoundException("Erro ao encontrar usuário com o id="+id)
         );
     }
 
     @Transactional(readOnly = true)
     public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("Erro ao encontrar usuário com o email="+email)
+                () -> new EntityNotFoundException("Erro ao encontrar usuário com o email="+email)
         );
     }
 
@@ -101,7 +103,7 @@ public class UserService {
             return JwtUtils.createToken(user.getEmail(), "ROLE_USER");
         }
 
-        throw new RuntimeException("Erro ao reconhecer face");
+        throw new RecognizingFaceException("Erro ao reconhecer face");
     }
 
     @Transactional(readOnly = true)
@@ -112,7 +114,7 @@ public class UserService {
             return JwtUtils.createToken(user.getEmail(), "ROLE_STEP1_SIGIN_COMPLETED");
         }
 
-        throw new RuntimeException("Credenciais inválidas ao realizar login");
+        throw new BadCredentialsException("Credenciais inválidas ao realizar login");
     }
 
     private int verifyFaceUtils(MultipartFile fileFace) throws IOException {

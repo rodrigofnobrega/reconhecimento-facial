@@ -1,10 +1,10 @@
-package com.app.two.factor.auth.jwt;
+package com.app.two.factor.auth.infra.jwt;
 
+import com.app.two.factor.auth.exception.EntityNotFoundException;
 import com.app.two.factor.auth.user.UserEntity;
 import com.app.two.factor.auth.user.UserRepository;
 import com.app.two.factor.auth.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +21,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(username).orElseThrow(
-                () -> new RuntimeException("Usuário não encontrado.")
+                () -> new EntityNotFoundException("Usuário não encontrado.")
         );
 
 
