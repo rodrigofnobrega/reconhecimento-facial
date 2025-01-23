@@ -1,4 +1,4 @@
-package com.app.two.factor.auth.jwt;
+package com.app.two.factor.auth.infra.jwt;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

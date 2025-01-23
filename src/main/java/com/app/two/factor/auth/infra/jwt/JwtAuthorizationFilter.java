@@ -1,4 +1,4 @@
-package com.app.two.factor.auth.jwt;
+package com.app.two.factor.auth.infra.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
